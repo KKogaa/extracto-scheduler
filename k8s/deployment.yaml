@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: extracto-scheduler
+  namespace: extracto
+  labels:
+    app: extracto-scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: extracto-scheduler
+  template:
+    metadata:
+      labels:
+        app: extracto-scheduler
+    spec:
+      imagePullSecrets:
+      - name: ghcr-secret
+      containers:
+      - name: scheduler
+        image: ghcr.io/kkogaa/extracto-scheduler:IMAGE_TAG
+        imagePullPolicy: Always
+        env:
+        - name: REDIS_HOST
+          value: "redis.extracto.svc.cluster.local"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"

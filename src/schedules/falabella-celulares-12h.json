@@ -1,0 +1,41 @@
+{
+  "id": "falabella-celulares-12h",
+  "name": "Falabella Celulares - Every 12 Hours",
+  "description": "Scrape cellphones every 12 hours",
+  "enabled": true,
+  "schedule": "0 */12 * * *",
+  "scrapeConfig": {
+    "baseUrl": "https://www.falabella.com.pe/falabella-pe/category/cat760706/Celulares-y-Telefonos",
+    "pagination": {
+      "enabled": true,
+      "startPage": 1,
+      "endPage": 157,
+      "pageParam": "page"
+    },
+    "actions": [
+      {
+        "type": "navigate",
+        "url": "{{url}}",
+        "waitUntil": "networkidle",
+        "timeout": 30000
+      },
+      {
+        "type": "waitForTimeout",
+        "timeout": 3000
+      },
+      {
+        "type": "getText",
+        "selector": "#__NEXT_DATA__",
+        "saveTo": "productData"
+      }
+    ],
+    "rateLimit": {
+      "delayBetweenPages": 2000,
+      "delayBetweenBatches": 5000,
+      "batchSize": 5
+    },
+    "options": {
+      "timeout": 30000
+    }
+  }
+}
