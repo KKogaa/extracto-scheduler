@@ -1,0 +1,41 @@
+{
+  "id": "urbania-san-isidro-12h",
+  "name": "Urbania San Isidro Apartments - Every 12 Hours",
+  "description": "Scrape apartment rentals in San Isidro, Lima every 12 hours",
+  "enabled": true,
+  "schedule": "0 */12 * * *",
+  "scrapeConfig": {
+    "baseUrl": "https://urbania.pe/buscar/alquiler-de-departamentos-en-san-isidro--lima--lima",
+    "pagination": {
+      "enabled": true,
+      "startPage": 1,
+      "endPage": 50,
+      "pageParam": "page"
+    },
+    "actions": [
+      {
+        "type": "navigate",
+        "url": "{{url}}",
+        "waitUntil": "networkidle",
+        "timeout": 30000
+      },
+      {
+        "type": "waitForTimeout",
+        "timeout": 3000
+      },
+      {
+        "type": "getText",
+        "selector": "body",
+        "saveTo": "data"
+      }
+    ],
+    "rateLimit": {
+      "delayBetweenPages": 3000,
+      "delayBetweenBatches": 8000,
+      "batchSize": 3
+    },
+    "options": {
+      "timeout": 30000
+    }
+  }
+}
