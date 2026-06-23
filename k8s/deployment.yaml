@@ -19,7 +19,7 @@ spec:
       - name: ghcr-secret
       containers:
       - name: scheduler
-        image: ghcr.io/kkogaa/extracto-scheduler:bbb57d8
+        image: ghcr.io/kkogaa/extracto-scheduler:de1dafa
         imagePullPolicy: Always
         env:
         - name: FETCH_API_URL
