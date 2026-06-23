@@ -42,20 +42,6 @@ export interface ScrapeSchedule {
   notifications?: NotificationConfig;
 }
 
-export interface ScheduleExecution {
-  _id?: any;
-  scheduleId: string;
-  scheduleName: string;
-  startedAt: Date;
-  completedAt?: Date;
-  status: 'running' | 'success' | 'failed' | 'partial';
-  pagesSubmitted: number;
-  pagesFailed: number;
-  jobIds: string[];
-  duration?: number;
-  error?: string;
-}
-
 export interface JobSubmissionResult {
   success: boolean;
   jobId?: string;

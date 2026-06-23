@@ -4,7 +4,7 @@
   "description": "Cron-based scheduler for automated web scraping",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc && cp -r src/schedules dist/schedules",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "lint": "eslint src --ext .ts"

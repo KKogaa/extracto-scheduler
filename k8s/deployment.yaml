@@ -25,13 +25,9 @@ spec:
         - name: FETCH_API_URL
           value: "http://extracto-fetch-api.extracto.svc.cluster.local:3000"
         - name: SCHEDULES_DIR
-          value: "./src/schedules"
+          value: "./dist/schedules"
         - name: TIMEZONE
           value: "America/Lima"
-        - name: REDIS_HOST
-          value: "redis.extracto.svc.cluster.local"
-        - name: REDIS_PORT
-          value: "6379"
         - name: NODE_ENV
           value: "production"
         resources:

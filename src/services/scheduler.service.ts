@@ -8,6 +8,7 @@ import { ExecutorService } from './executor.service';
 export class SchedulerService {
   private schedules: Map<string, ScrapeSchedule> = new Map();
   private cronJobs: Map<string, cron.ScheduledTask> = new Map();
+  private runningSchedules: Set<string> = new Set();
   private executor: ExecutorService;
 
   constructor() {
@@ -34,7 +35,7 @@ export class SchedulerService {
     for (const [id, schedule] of this.schedules) {
       if (schedule.enabled && cron.validate(schedule.schedule)) {
         const task = cron.schedule(schedule.schedule, () => {
-          this.executor.executeSchedule(schedule).catch(console.error);
+          this.runSchedule(schedule).catch(console.error);
         }, { scheduled: true, timezone: CONFIG.scheduler.timezone });
         this.cronJobs.set(id, task);
         console.log(`   ✅ ${schedule.name} - ${schedule.schedule}`);
@@ -47,7 +48,20 @@ export class SchedulerService {
   async executeNow(scheduleId: string): Promise<void> {
     const schedule = this.schedules.get(scheduleId);
     if (!schedule) throw new Error(`Schedule not found: ${scheduleId}`);
-    await this.executor.executeSchedule(schedule);
+    await this.runSchedule(schedule);
+  }
+
+  private async runSchedule(schedule: ScrapeSchedule): Promise<void> {
+    if (this.runningSchedules.has(schedule.id)) {
+      console.warn(`⏭️  Skipping ${schedule.name}: previous run still in progress`);
+      return;
+    }
+    this.runningSchedules.add(schedule.id);
+    try {
+      await this.executor.executeSchedule(schedule);
+    } finally {
+      this.runningSchedules.delete(schedule.id);
+    }
   }
 
   stopAll(): void {
